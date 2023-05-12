@@ -2,11 +2,17 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import CreatePlayerDto from './dtos/create_player.dto';
 import { IPlayer } from './interfaces/players.interface';
 import { v4 as uuid4 } from 'uuid';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PlayersService {
   private readonly logger = new Logger(PlayersService.name);
   private players: IPlayer[] = [];
+
+  constructor(
+    @InjectModel('Player') private readonly playerModel: Model<IPlayer>,
+  ) {}
 
   async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<void> {
     const { email } = createPlayerDto;
