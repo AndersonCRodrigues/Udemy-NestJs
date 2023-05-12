@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   Query,
   UsePipes,
@@ -26,14 +27,13 @@ export class PlayersController {
   }
 
   @Get()
-  async getPlayers(
-    @Query('email') email: string,
-  ): Promise<IPlayer[] | IPlayer> {
-    if (email) {
-      return this.playerService.getByEmail(email);
-    } else {
-      return this.playerService.getAll();
-    }
+  async getPlayers(): Promise<IPlayer[]> {
+    return this.playerService.getAll();
+  }
+
+  @Get('/:_id')
+  async getPlayerById(@Param('_id') _id: string): Promise<IPlayer> {
+    return this.playerService.getById(_id);
   }
 
   @Delete()
