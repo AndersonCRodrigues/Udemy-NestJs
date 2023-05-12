@@ -68,9 +68,9 @@ export class PlayersService {
     }
   }
 
-  async deletePlayer(email: string): Promise<any> {
+  async deletePlayer(_id: string): Promise<any> {
     try {
-      return this.playerModel.findOneAndDelete({ email });
+      return this.playerModel.findByIdAndDelete(_id);
     } catch (e) {
       throw new Error(e.message);
     }
