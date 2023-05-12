@@ -9,14 +9,29 @@ export class PlayersService {
   private players: IPlayer[] = [];
 
   async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<void> {
-    this.create(createPlayerDto);
+    const { email } = createPlayerDto;
+
+    const player = await this.players.find((player) => player.email === email);
+
+    if (player) {
+      await this.update(player, createPlayerDto);
+    } else {
+      await this.create(createPlayerDto);
+    }
   }
 
   async getAll(): Promise<IPlayer[]> {
     return this.players;
   }
 
-  private create(createPlayerDto: CreatePlayerDto): void {
+  private async update(
+    player: IPlayer,
+    createPlayerDto: CreatePlayerDto,
+  ): Promise<void> {
+    player.name = createPlayerDto.name;
+  }
+
+  private async create(createPlayerDto: CreatePlayerDto): Promise<void> {
     const { email, name, phoneNumber } = createPlayerDto;
 
     const player: IPlayer = {
