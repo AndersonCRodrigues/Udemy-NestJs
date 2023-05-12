@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import CreatePlayerDto from './dtos/create_player.dto';
 import { PlayersService } from './players.service';
@@ -16,7 +17,7 @@ export class PlayersController {
   constructor(private readonly playerService: PlayersService) {}
 
   @Post()
-  @UsePipes()
+  @UsePipes(ValidationPipe)
   async createUpdatePlayer(
     @Body() createPlayerDto: CreatePlayerDto,
   ): Promise<IPlayer> {
