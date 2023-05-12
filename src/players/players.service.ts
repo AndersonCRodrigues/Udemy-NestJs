@@ -20,7 +20,7 @@ export class PlayersService {
     const player = await this.findPlayer(email);
 
     if (player) {
-      await this.update(player, createPlayerDto);
+      await this.update(createPlayerDto);
     } else {
       await this.create(createPlayerDto);
     }
@@ -35,7 +35,7 @@ export class PlayersService {
   }
 
   async getByEmail(email: string): Promise<IPlayer> {
-    const player = this.players.find((player) => player.email === email);
+    const player = this.findPlayer(email);
 
     if (!player) {
       throw new NotFoundException(`Player not found with ${email}`);
@@ -44,14 +44,18 @@ export class PlayersService {
   }
 
   private async update(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
-    return this.playerModel
-      .findByIdAndUpdate(
-        { email: createPlayerDto.email },
-        {
-          $set: createPlayerDto,
-        },
-      )
-      .exec();
+    try {
+      return this.playerModel
+        .findByIdAndUpdate(
+          { email: createPlayerDto.email },
+          {
+            $set: createPlayerDto,
+          },
+        )
+        .exec();
+    } catch (e) {
+      throw new Error(e.message);
+    }
   }
 
   private async create(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
@@ -63,11 +67,11 @@ export class PlayersService {
     }
   }
 
-  async deletePlayer(email: string): Promise<void> {
-    const player = this.players.find((player) => player.email === email);
-    if (!player) {
-      throw new NotFoundException(`Player not found with ${email}`);
+  async deletePlayer(email: string): Promise<any> {
+    try {
+      return this.playerModel.findByIdAndRemove(email).exec();
+    } catch (e) {
+      throw new Error(e.message);
     }
-    this.players = this.players.filter((p) => p.email !== player.email);
   }
 }
