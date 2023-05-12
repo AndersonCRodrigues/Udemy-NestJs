@@ -17,13 +17,17 @@ export class PlayersService {
   async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<void> {
     const { email } = createPlayerDto;
 
-    const player = this.players.find((player) => player.email === email);
+    const player = this.findPlayer(email);
 
     if (player) {
       await this.update(player, createPlayerDto);
     } else {
       await this.create(createPlayerDto);
     }
+  }
+
+  private async findPlayer(email: string) {
+    return this.playerModel.findOne({ email }).exec();
   }
 
   async getAll(): Promise<IPlayer[]> {
