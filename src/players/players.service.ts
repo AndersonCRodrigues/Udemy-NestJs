@@ -51,22 +51,15 @@ export class PlayersService {
   }
 
   async createPlayer(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
-    try {
-      if (await this.findPlayer(createPlayerDto.email)) {
-        throw new BadRequestException('E-mail already registered ');
-      }
-      const player = new this.playerModel(createPlayerDto);
-      return player.save();
-    } catch (e) {
-      throw new Error(e.message);
+    if (await this.findPlayer(createPlayerDto.email)) {
+      throw new BadRequestException('E-mail already registered ');
     }
+    const player = new this.playerModel(createPlayerDto);
+    return player.save();
   }
 
   async deletePlayer(_id: string): Promise<any> {
-    try {
-      return this.playerModel.findByIdAndDelete(_id);
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    await this.getById(_id);
+    return this.playerModel.findByIdAndDelete(_id);
   }
 }
