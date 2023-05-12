@@ -31,7 +31,7 @@ export class PlayersService {
   }
 
   async getAll(): Promise<IPlayer[]> {
-    return this.players;
+    return this.playerModel.find().exec();
   }
 
   async getByEmail(email: string): Promise<IPlayer> {
@@ -43,11 +43,15 @@ export class PlayersService {
     return player;
   }
 
-  private async update(
-    player: IPlayer,
-    createPlayerDto: CreatePlayerDto,
-  ): Promise<void> {
-    player.name = createPlayerDto.name;
+  private async update(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
+    return this.playerModel
+      .findByIdAndUpdate(
+        { email: createPlayerDto.email },
+        {
+          $set: createPlayerDto,
+        },
+      )
+      .exec();
   }
 
   private async create(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
