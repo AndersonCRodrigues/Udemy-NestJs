@@ -52,7 +52,9 @@ export class PlayersService {
 
   async createPlayer(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
     if (await this.findPlayer(createPlayerDto.email)) {
-      throw new BadRequestException('E-mail already registered ');
+      throw new BadRequestException(
+        `E-mail ${createPlayerDto.email} already registered`,
+      );
     }
     const player = new this.playerModel(createPlayerDto);
     return player.save();
