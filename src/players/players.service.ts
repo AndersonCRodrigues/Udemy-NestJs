@@ -57,7 +57,9 @@ export class PlayersService {
     }
   }
 
-  private async create(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
+  private async createPlayer(
+    createPlayerDto: CreatePlayerDto,
+  ): Promise<IPlayer> {
     try {
       const player = new this.playerModel(createPlayerDto);
       return player.save();
