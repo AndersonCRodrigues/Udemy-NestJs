@@ -24,7 +24,7 @@ export class PlayersController {
   }
 
   @Delete()
-  async deletePlayer(@Query('email') email: string): Promise<void> {
-    this.playerService.delete(email);
+  async deletePlayer(@Query('email') email: string) {
+    return this.playerService.deletePlayer(email);
   }
 }
