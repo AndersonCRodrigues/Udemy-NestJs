@@ -14,18 +14,6 @@ export class PlayersService {
     @InjectModel('Player') private readonly playerModel: Model<IPlayer>,
   ) {}
 
-  // async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
-  //   const { email } = createPlayerDto;
-
-  //   const player = await this.findPlayer(email);
-
-  //   if (player) {
-  //     return this.update(createPlayerDto);
-  //   } else {
-  //     return this.create(createPlayerDto);
-  //   }
-  // }
-
   private async findPlayer(email: string) {
     return this.playerModel.findOne({ email });
   }
@@ -34,8 +22,8 @@ export class PlayersService {
     return this.playerModel.find();
   }
 
-  async getById(id: string): Promise<IPlayer> {
-    const player = await this.playerModel.findById(id);
+  async getById(_id: string): Promise<IPlayer> {
+    const player = await this.playerModel.findById(_id);
 
     if (!player) {
       throw new NotFoundException(`Player not found`);
@@ -43,7 +31,7 @@ export class PlayersService {
     return player;
   }
 
-  private async updatePlayer(
+  async updatePlayer(
     _id: string,
     createPlayerDto: CreatePlayerDto,
   ): Promise<IPlayer> {
@@ -57,9 +45,7 @@ export class PlayersService {
     }
   }
 
-  private async createPlayer(
-    createPlayerDto: CreatePlayerDto,
-  ): Promise<IPlayer> {
+  async createPlayer(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
     try {
       const player = new this.playerModel(createPlayerDto);
       return player.save();
