@@ -11,7 +11,7 @@ export class PlayersService {
   async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<void> {
     const { email } = createPlayerDto;
 
-    const player = await this.players.find((player) => player.email === email);
+    const player = this.players.find((player) => player.email === email);
 
     if (player) {
       await this.update(player, createPlayerDto);
@@ -25,7 +25,7 @@ export class PlayersService {
   }
 
   async getByEmail(email: string): Promise<IPlayer> {
-    const player = await this.players.find((player) => player.email === email);
+    const player = this.players.find((player) => player.email === email);
 
     if (!player) {
       throw new NotFoundException(`Player not found with ${email}`);
@@ -57,7 +57,7 @@ export class PlayersService {
   }
 
   async deletePlayer(email: string): Promise<void> {
-    const player = await this.players.find((player) => player.email === email);
+    const player = this.players.find((player) => player.email === email);
     if (!player) {
       throw new NotFoundException(`Player not found with ${email}`);
     }
