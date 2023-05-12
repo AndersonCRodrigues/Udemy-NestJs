@@ -56,7 +56,7 @@ export class PlayersService {
     this.players.push(player);
   }
 
-  async delete(email: string): Promise<void> {
+  async deletePlayer(email: string): Promise<void> {
     const player = await this.players.find((player) => player.email === email);
     if (!player) {
       throw new NotFoundException(`Player not found with ${email}`);
