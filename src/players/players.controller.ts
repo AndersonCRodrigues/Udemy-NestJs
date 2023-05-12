@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UsePipes,
@@ -20,10 +21,19 @@ export class PlayersController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  async createUpdatePlayer(
+  async createPlayer(
     @Body() createPlayerDto: CreatePlayerDto,
   ): Promise<IPlayer> {
-    return await this.playerService.createUpdatePlayer(createPlayerDto);
+    return await this.playerService.createPlayer(createPlayerDto);
+  }
+
+  @Patch('/:_id')
+  @UsePipes(ValidationPipe)
+  async updatePlayer(
+    @Body() createPlayerDto: CreatePlayerDto,
+    @Param('_id', PlayersValidationParams) _id: string,
+  ): Promise<IPlayer> {
+    return await this.playerService.updatePlayer(_id, createPlayerDto);
   }
 
   @Get()
@@ -32,12 +42,16 @@ export class PlayersController {
   }
 
   @Get('/:_id')
-  async getPlayerById(@Param('_id') _id: string): Promise<IPlayer> {
+  async getPlayerById(
+    @Param('_id', PlayersValidationParams) _id: string,
+  ): Promise<IPlayer> {
     return this.playerService.getById(_id);
   }
 
   @Delete()
-  async deletePlayer(@Query('email', PlayersValidationParams) email: string) {
-    return this.playerService.deletePlayer(email);
+  async deletePlayer(
+    @Query('email', PlayersValidationParams) email: string,
+  ): Promise<void> {
+    this.playerService.deletePlayer(email);
   }
 }
