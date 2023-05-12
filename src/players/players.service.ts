@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import CreatePlayerDto from './dtos/create_player.dto';
 import { IPlayer } from './interfaces/players.interface';
 // import { v4 as uuid4 } from 'uuid';
@@ -47,6 +52,9 @@ export class PlayersService {
 
   async createPlayer(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
     try {
+      if (await this.findPlayer(createPlayerDto.email)) {
+        throw new BadRequestException('E-mail already registered ');
+      }
       const player = new this.playerModel(createPlayerDto);
       return player.save();
     } catch (e) {
