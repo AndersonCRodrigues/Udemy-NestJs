@@ -9,8 +9,11 @@ export class PlayersService {
   private players: IPlayer[] = [];
 
   async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<void> {
-    this.logger.log(`createPplayerDto ${createPlayerDto}`);
     this.create(createPlayerDto);
+  }
+
+  async getAll(): Promise<IPlayer[]> {
+    return this.players;
   }
 
   private create(createPlayerDto: CreatePlayerDto): void {
@@ -25,6 +28,7 @@ export class PlayersService {
       rankingPosition: 1,
       urlImagePalyer: '',
     };
+    this.logger.log(`createPplayerDto ${JSON.stringify(player)}`);
     this.players.push(player);
   }
 }
