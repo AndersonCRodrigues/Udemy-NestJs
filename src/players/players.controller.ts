@@ -31,8 +31,8 @@ export class PlayersController {
   async updatePlayer(
     @Body() createPlayerDto: CreatePlayerDto,
     @Param('_id', PlayersValidationParams) _id: string,
-  ): Promise<IPlayer> {
-    return await this.playerService.updatePlayer(_id, createPlayerDto);
+  ): Promise<void> {
+    await this.playerService.updatePlayer(_id, createPlayerDto);
   }
 
   @Get()

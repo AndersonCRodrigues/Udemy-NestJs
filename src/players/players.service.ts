@@ -34,9 +34,9 @@ export class PlayersService {
   async updatePlayer(
     _id: string,
     createPlayerDto: CreatePlayerDto,
-  ): Promise<IPlayer> {
+  ): Promise<void> {
     try {
-      return this.playerModel.findByIdAndUpdate(
+      this.playerModel.findByIdAndUpdate(
         { _id },
         { name: createPlayerDto.name },
       );
