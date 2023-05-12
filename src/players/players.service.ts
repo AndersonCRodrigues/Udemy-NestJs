@@ -55,4 +55,12 @@ export class PlayersService {
     this.logger.log(`createPplayerDto ${JSON.stringify(player)}`);
     this.players.push(player);
   }
+
+  async delete(email: string): Promise<void> {
+    const player = await this.players.find((player) => player.email === email);
+    if (!player) {
+      throw new NotFoundException(`Player not found with ${email}`);
+    }
+    this.players = this.players.filter((p) => p.email !== player.email);
+  }
 }
