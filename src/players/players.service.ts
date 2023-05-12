@@ -14,24 +14,24 @@ export class PlayersService {
     @InjectModel('Player') private readonly playerModel: Model<IPlayer>,
   ) {}
 
-  async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<void> {
+  async createUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
     const { email } = createPlayerDto;
 
     const player = await this.findPlayer(email);
 
     if (player) {
-      await this.update(createPlayerDto);
+      return this.update(createPlayerDto);
     } else {
-      await this.create(createPlayerDto);
+      return this.create(createPlayerDto);
     }
   }
 
   private async findPlayer(email: string) {
-    return this.playerModel.findOne({ email }).exec();
+    return this.playerModel.findOne({ email });
   }
 
   async getAll(): Promise<IPlayer[]> {
-    return this.playerModel.find().exec();
+    return this.playerModel.find();
   }
 
   async getByEmail(email: string): Promise<IPlayer> {
@@ -45,14 +45,10 @@ export class PlayersService {
 
   private async update(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
     try {
-      return this.playerModel
-        .findByIdAndUpdate(
-          { email: createPlayerDto.email },
-          {
-            $set: createPlayerDto,
-          },
-        )
-        .exec();
+      return this.playerModel.findOneAndUpdate(
+        { email: createPlayerDto.email },
+        { name: createPlayerDto.name },
+      );
     } catch (e) {
       throw new Error(e.message);
     }
@@ -69,7 +65,7 @@ export class PlayersService {
 
   async deletePlayer(email: string): Promise<any> {
     try {
-      return this.playerModel.findByIdAndRemove(email).exec();
+      return this.playerModel.findOneAndDelete({ email });
     } catch (e) {
       throw new Error(e.message);
     }

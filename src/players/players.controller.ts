@@ -8,8 +8,10 @@ export class PlayersController {
   constructor(private readonly playerService: PlayersService) {}
 
   @Post()
-  async createUpdatePlayer(@Body() createPlayerDto: CreatePlayerDto) {
-    await this.playerService.createUpdatePlayer(createPlayerDto);
+  async createUpdatePlayer(
+    @Body() createPlayerDto: CreatePlayerDto,
+  ): Promise<IPlayer> {
+    return await this.playerService.createUpdatePlayer(createPlayerDto);
   }
 
   @Get()
