@@ -60,7 +60,9 @@ export class CategoiesService {
       .where('players')
       .in([_id]);
     if (check.length)
-      throw new BadRequestException('Player already included in this category');
+      throw new BadRequestException(
+        `Player already included in category ${category}`,
+      );
   }
 
   async addCategoryPlayer(params: string[]): Promise<void> {
