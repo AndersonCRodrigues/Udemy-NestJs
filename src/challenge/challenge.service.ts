@@ -9,6 +9,7 @@ import { CreateChallengeDto } from './dtos/create_challenge.dto';
 import { IChallenge, IMatch } from './interfaces/challenge.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UpdateChallengeDto } from './dtos/update_challenge';
 
 @Injectable()
 export class ChallengeService {
@@ -76,5 +77,21 @@ export class ChallengeService {
       throw new NotFoundException('Player has no challenges');
 
     return challenge;
+  }
+
+  async updateChallenge(
+    _id: string,
+    updateChallengeDto: UpdateChallengeDto,
+  ): Promise<void> {
+    const challenge = await this.challengeModel.findById(_id);
+
+    if (!challenge) throw new NotFoundException('Challenge not foud');
+
+    if (updateChallengeDto.status) {
+      challenge.dateHourResponse = new Date();
+      challenge.status = updateChallengeDto.status;
+    }
+    challenge.dateHourChallenge = updateChallengeDto.dateHourChallenge;
+    await this.challengeModel.findByIdAndUpdate({ _id }, challenge);
   }
 }
