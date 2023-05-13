@@ -74,4 +74,16 @@ export class CategoriesService {
     categoryFound.players.push(idPlayer);
     await this.categoryModel.findOneAndUpdate({ category }, categoryFound);
   }
+
+  async getCategoryByPlayer(_id: string): Promise<ICategory> {
+    const category = await this.categoryModel
+      .findOne()
+      .where('players')
+      .in([_id]);
+
+    if (!category)
+      throw new NotFoundException('Player not being in any category');
+
+    return category;
+  }
 }
