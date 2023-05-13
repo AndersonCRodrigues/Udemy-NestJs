@@ -54,12 +54,21 @@ export class CategoiesService {
     await this.categoryModel.findOneAndUpdate({ category }, updateCategoryDto);
   }
 
+  private async checkPlayer(category: string, _id: string) {
+    const check = await this.categoryModel
+      .find({ category })
+      .where('players')
+      .in([_id]);
+    if (check.length)
+      throw new BadRequestException('Player already included in this category');
+  }
+
   async addCategoryPlayer(params: string[]): Promise<void> {
     const category = params['category'];
     const idPlayer = params['idPlayer'];
-
-    const categoryFound = await this.getCategory(category);
     await this.playerService.getById(idPlayer);
+    await this.checkPlayer(category, idPlayer);
+    const categoryFound = await this.getCategory(category);
     categoryFound.players.push(idPlayer);
     await this.categoryModel.findOneAndUpdate({ category }, categoryFound);
   }
