@@ -13,7 +13,7 @@ import { MatchSchema } from './interfaces/match.schema';
     PlayersModule,
     MongooseModule.forFeature([
       { name: 'Challenge', schema: ChallengeSchema },
-      { name: 'Math', schema: MatchSchema },
+      { name: 'Match', schema: MatchSchema },
     ]),
   ],
   controllers: [ChallengeController],
