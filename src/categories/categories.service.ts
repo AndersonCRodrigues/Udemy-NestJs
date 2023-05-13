@@ -11,7 +11,7 @@ import { UpdateCategoryDto } from './dtos/update_category.dto';
 import { PlayersService } from 'src/players/players.service';
 
 @Injectable()
-export class CategoiesService {
+export class CategoriesService {
   constructor(
     @InjectModel('Category') private readonly categoryModel: Model<ICategory>,
     private readonly playerService: PlayersService,

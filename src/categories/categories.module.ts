@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CategoiesController } from './categoies.controller';
-import { CategoiesService } from './categoies.service';
+import { CategoriesController } from './categories.controller';
+import { CategoriesService } from './categories.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CategorySchema } from './interfaces/category.schema';
 import { PlayersModule } from 'src/players/players.module';
@@ -10,7 +10,8 @@ import { PlayersModule } from 'src/players/players.module';
     MongooseModule.forFeature([{ name: 'Category', schema: CategorySchema }]),
     PlayersModule,
   ],
-  controllers: [CategoiesController],
-  providers: [CategoiesService],
+  controllers: [CategoriesController],
+  providers: [CategoriesService],
+  exports: [CategoriesService],
 })
-export class CategoiesModule {}
+export class CategoriesModule {}

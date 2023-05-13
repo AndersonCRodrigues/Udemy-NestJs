@@ -10,12 +10,12 @@ import {
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dtos/create_category.dto';
 import { ICategory } from './interfaces/category.interface';
-import { CategoiesService } from './categoies.service';
+import { CategoriesService } from './categories.service';
 import { UpdateCategoryDto } from './dtos/update_category.dto';
 
 @Controller('api/v1/categoies')
-export class CategoiesController {
-  constructor(private readonly categoriesService: CategoiesService) {}
+export class CategoriesController {
+  constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
   @UsePipes(ValidationPipe)
