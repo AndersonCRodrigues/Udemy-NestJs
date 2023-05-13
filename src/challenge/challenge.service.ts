@@ -18,6 +18,9 @@ export class ChallengeService {
   private async checkPlayers(
     createChallengeDto: CreateChallengeDto,
   ): Promise<void> {
+    if (createChallengeDto.players[0].id === createChallengeDto.players[1].id)
+      throw new BadRequestException('Players must be different');
+
     createChallengeDto.players.forEach(
       async (player) => await this.playerService.getById(player._id),
     );
