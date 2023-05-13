@@ -24,4 +24,8 @@ export class CategoiesService {
     const category = new this.categoryModel(createCategoryDto);
     return category.save();
   }
+
+  async getAllCategories(): Promise<ICategory[]> {
+    return this.categoryModel.find();
+  }
 }

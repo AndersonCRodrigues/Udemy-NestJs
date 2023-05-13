@@ -23,7 +23,7 @@ export class CategoiesController {
   }
 
   @Get()
-  async getAllCategories(): Promise<ICategory> {
+  async getAllCategories(): Promise<ICategory[]> {
     return this.categoriesService.getAllCategories();
   }
 }
