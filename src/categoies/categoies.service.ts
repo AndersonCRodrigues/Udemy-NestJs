@@ -8,10 +8,12 @@ import { Model } from 'mongoose';
 import { ICategory } from './interfaces/category.interface';
 import { CreateCategoryDto } from './dtos/create_category.dto';
 import { UpdateCategoryDto } from './dtos/update_category.dto';
+import { PlayersService } from 'src/players/players.service';
 
 @Injectable()
 export class CategoiesService {
   constructor(
+    private readonly playerService: PlayersService,
     @InjectModel('Category') private readonly categoryModel: Model<ICategory>,
   ) {}
 
@@ -48,5 +50,15 @@ export class CategoiesService {
   ): Promise<void> {
     await this.findCategory(category);
     await this.categoryModel.findOneAndUpdate({ category }, updateCategoryDto);
+  }
+
+  async addCategoryPlayer(params: string[]): Promise<void> {
+    const category = params['category'];
+    const idPlayer = params['idPlayer'];
+
+    const categoryFound = await this.getCategory(category);
+    await this.playerService.getById(idPlayer);
+    categoryFound.players.push(idPlayer);
+    await this.categoryModel.findOneAndUpdate({ category }, categoryFound);
   }
 }
