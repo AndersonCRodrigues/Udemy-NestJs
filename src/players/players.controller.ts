@@ -13,6 +13,7 @@ import CreatePlayerDto from './dtos/create_player.dto';
 import { PlayersService } from './players.service';
 import { IPlayer } from './interfaces/players.interface';
 import { PlayersValidationParams } from './pipes/player_validation_param.pipe';
+import UpdatePlayerDto from './dtos/update-player.dto';
 
 @Controller('api/v1/players')
 export class PlayersController {
@@ -29,10 +30,10 @@ export class PlayersController {
   @Patch('/:_id')
   @UsePipes(ValidationPipe)
   async updatePlayer(
-    @Body() createPlayerDto: CreatePlayerDto,
+    @Body() updatePlayerDto: UpdatePlayerDto,
     @Param('_id', PlayersValidationParams) _id: string,
   ): Promise<void> {
-    await this.playerService.updatePlayer(_id, createPlayerDto);
+    await this.playerService.updatePlayer(_id, updatePlayerDto);
   }
 
   @Get()
