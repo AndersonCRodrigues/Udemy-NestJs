@@ -36,7 +36,7 @@ export class CategoiesService {
   async getCategory(category: string): Promise<ICategory> {
     const categoryFound = await this.categoryModel.findOne({ category });
     if (!categoryFound) {
-      throw new NotFoundException('Category not found');
+      throw new NotFoundException(`Category ${category} not found`);
     }
     return categoryFound;
   }
