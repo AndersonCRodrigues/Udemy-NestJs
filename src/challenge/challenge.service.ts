@@ -50,7 +50,6 @@ export class ChallengeService {
     );
 
     const challenge = new this.challengeModel(createChallengeDto);
-    challenge.dateHourRequest = new Date();
     challenge.category = category.category;
 
     return challenge.save();
