@@ -9,6 +9,7 @@ import { IPlayer } from './interfaces/players.interface';
 // import { v4 as uuid4 } from 'uuid';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import UpdatePlayerDto from './dtos/update-player.dto';
 
 @Injectable()
 export class PlayersService {
@@ -38,13 +39,10 @@ export class PlayersService {
 
   async updatePlayer(
     _id: string,
-    createPlayerDto: CreatePlayerDto,
+    updatePlayerDto: UpdatePlayerDto,
   ): Promise<void> {
     try {
-      this.playerModel.findByIdAndUpdate(
-        { _id },
-        { name: createPlayerDto.name },
-      );
+      this.playerModel.findByIdAndUpdate({ _id }, { updatePlayerDto });
     } catch (e) {
       throw new Error(e.message);
     }
