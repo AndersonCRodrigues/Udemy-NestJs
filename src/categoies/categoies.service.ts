@@ -13,8 +13,8 @@ import { PlayersService } from 'src/players/players.service';
 @Injectable()
 export class CategoiesService {
   constructor(
-    private readonly playerService: PlayersService,
     @InjectModel('Category') private readonly categoryModel: Model<ICategory>,
+    private readonly playerService: PlayersService,
   ) {}
 
   private async findCategory(category: string) {
