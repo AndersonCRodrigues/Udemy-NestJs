@@ -41,11 +41,8 @@ export class PlayersService {
     _id: string,
     updatePlayerDto: UpdatePlayerDto,
   ): Promise<void> {
-    try {
-      await this.playerModel.findByIdAndUpdate(_id, updatePlayerDto);
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    await this.getById(_id);
+    await this.playerModel.findByIdAndUpdate(_id, updatePlayerDto);
   }
 
   async createPlayer(createPlayerDto: CreatePlayerDto): Promise<IPlayer> {
