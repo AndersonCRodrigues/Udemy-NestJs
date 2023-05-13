@@ -42,7 +42,7 @@ export class PlayersService {
     updatePlayerDto: UpdatePlayerDto,
   ): Promise<void> {
     try {
-      this.playerModel.findByIdAndUpdate({ _id }, { updatePlayerDto });
+      await this.playerModel.findByIdAndUpdate(_id, updatePlayerDto);
     } catch (e) {
       throw new Error(e.message);
     }
