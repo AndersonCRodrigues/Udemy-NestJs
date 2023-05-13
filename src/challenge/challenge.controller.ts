@@ -9,7 +9,7 @@ import { ChallengeService } from './challenge.service';
 import { CreateChallengeDto } from './dtos/create_challenge.dto';
 import { IChallenge } from './interfaces/challenge.interface';
 
-@Controller('/api/v1/challenge')
+@Controller('api/v1/challenges')
 export class ChallengeController {
   constructor(private readonly challengeService: ChallengeService) {}
 
