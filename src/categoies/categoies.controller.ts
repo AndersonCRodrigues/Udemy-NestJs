@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   UsePipes,
   ValidationPipe,
@@ -10,6 +11,7 @@ import {
 import { CreateCategoryDto } from './dtos/create_category.dto';
 import { ICategory } from './interfaces/category.interface';
 import { CategoiesService } from './categoies.service';
+import { UpdateCategoryDto } from './dtos/update_category.dto';
 
 @Controller('api/v1/categoies')
 export class CategoiesController {
@@ -31,5 +33,13 @@ export class CategoiesController {
   @Get('/:category')
   async getCategor(@Param('category') category: string): Promise<ICategory> {
     return this.categoriesService.getCategory(category);
+  }
+
+  @Patch('/:category')
+  async updateCategory(
+    @Param('category') category: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ): Promise<void> {
+    return this.categoriesService.updateCategory(category, updateCategoryDto);
   }
 }
