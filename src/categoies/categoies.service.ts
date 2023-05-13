@@ -33,7 +33,7 @@ export class CategoiesService {
   }
 
   async getAllCategories(): Promise<ICategory[]> {
-    return this.categoryModel.find();
+    return this.categoryModel.find().populate('players');
   }
 
   async getCategory(category: string): Promise<ICategory> {
