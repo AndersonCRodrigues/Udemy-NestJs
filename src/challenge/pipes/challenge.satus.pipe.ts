@@ -9,13 +9,15 @@ export class ChallengeStatusValidation implements PipeTransform {
   ];
 
   transform(value: any) {
-    const status = value.status.toUpperCase();
+    if (value.status) {
+      const status = value.status.toUpperCase();
+      if (!this.ehStatusAlllowed(status)) {
+        throw new BadRequestException(`status ${status} is not valid`);
+      }
 
-    if (!this.ehStatusAlllowed(status)) {
-      throw new BadRequestException(`status ${status} is not valid`);
+      return value;
     }
   }
-
   private ehStatusAlllowed(status: any) {
     const index = this.statusAlllowed.indexOf(status);
 
