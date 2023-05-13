@@ -19,6 +19,7 @@ export interface IChallenge extends Document {
   dateHourRequest: Date;
   dateHourResponse: Date;
   requester: string;
+  category: string;
   players: IPlayer[];
   match: IMatch;
 }
