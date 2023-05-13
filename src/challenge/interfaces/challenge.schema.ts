@@ -5,7 +5,7 @@ export const ChallengeSchema = new mongoose.Schema(
   {
     dateHourChallenge: { type: Date },
     status: { type: String, default: ChallengeStatus.PENDING },
-    dateHourRequest: { type: Date },
+    dateHourRequest: { type: Date, default: Date.now },
     dateHourResponse: { type: Date },
     category: { type: String },
     requester: {
