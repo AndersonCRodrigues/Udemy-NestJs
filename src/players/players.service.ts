@@ -32,7 +32,7 @@ export class PlayersService {
     const player = await this.playerModel.findById(_id);
 
     if (!player) {
-      throw new NotFoundException(`Player not found`);
+      throw new NotFoundException(`Player with id ${_id} not found`);
     }
     return player;
   }
