@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
 import { PlayersService } from 'src/players/players.service';
 import { CreateChallengeDto } from './dtos/create_challenge.dto';
-import { IChallenge } from './interfaces/challenge.interface';
+import { IChallenge, IMatch } from './interfaces/challenge.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -11,6 +11,7 @@ export class ChallengeService {
   constructor(
     @InjectModel('Challenge')
     private readonly challengeModel: Model<IChallenge>,
+    @InjectModel('Match') matchModel: Model<IMatch>,
     private readonly categoryService: CategoriesService,
     private readonly playerService: PlayersService,
   ) {}
@@ -47,5 +48,24 @@ export class ChallengeService {
     challenge.category = category.category;
 
     return challenge.save();
+  }
+
+  async getAllChallenges(): Promise<IChallenge[]> {
+    return this.challengeModel
+      .find()
+      .populate('requester')
+      .populate('players')
+      .populate('match');
+  }
+
+  async getChallengeByPlayer(_id: string): Promise<IChallenge[]> {
+    await this.playerService.getById(_id);
+    return this.challengeModel
+      .find()
+      .where('players')
+      .in([_id])
+      .populate('requester')
+      .populate('players')
+      .populate('match');
   }
 }
