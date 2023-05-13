@@ -37,7 +37,9 @@ export class CategoiesService {
   }
 
   async getCategory(category: string): Promise<ICategory> {
-    const categoryFound = await this.categoryModel.findOne({ category });
+    const categoryFound = await this.categoryModel
+      .findOne({ category })
+      .populate('players');
     if (!categoryFound) {
       throw new NotFoundException(`Category ${category} not found`);
     }
