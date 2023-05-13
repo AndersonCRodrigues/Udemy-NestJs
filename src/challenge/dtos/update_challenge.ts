@@ -7,5 +7,5 @@ export class UpdateChallengeDto {
   dateHourChallenge: Date;
 
   @IsOptional()
-  sataus: ChallengeStatus;
+  status: ChallengeStatus;
 }
