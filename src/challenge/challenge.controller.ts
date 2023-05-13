@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UsePipes,
@@ -12,7 +13,7 @@ import { ChallengeService } from './challenge.service';
 import { CreateChallengeDto } from './dtos/create_challenge.dto';
 import { IChallenge } from './interfaces/challenge.interface';
 import { ChallengeStatusValidation } from './pipes/challenge.satus.pipe';
-import { UpdateCategoryDto } from 'src/categories/dtos/update_category.dto';
+import { UpdateChallengeDto } from './dtos/update_challenge';
 
 @Controller('api/v1/challenges')
 export class ChallengeController {
@@ -35,9 +36,9 @@ export class ChallengeController {
 
   @Patch('/:challenge')
   async updateChallenge(
-    @Body(ChallengeStatusValidation) updateChallengeDto: UpdateCategoryDto,
+    @Body(ChallengeStatusValidation) updateChallengeDto: UpdateChallengeDto,
     @Param('challenge') _id: string,
   ): Promise<void> {
-    await ChallengeService.updateChallege(_id, updateChallengeDto);
+    return await this.challengeService.updateChallenge(_id, updateChallengeDto);
   }
 }
