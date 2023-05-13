@@ -36,9 +36,9 @@ export class ChallengeController {
 
   @Patch('/:challenge')
   async updateChallenge(
+    @Param('challenge') challenge: string,
     @Body(ChallengeStatusValidation) updateChallengeDto: UpdateChallengeDto,
-    @Param('challenge') _id: string,
-  ): Promise<void> {
-    return await this.challengeService.updateChallenge(_id, updateChallengeDto);
+  ) {
+    return this.challengeService.updateChallenge(challenge, updateChallengeDto);
   }
 }

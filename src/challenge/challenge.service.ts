@@ -80,10 +80,10 @@ export class ChallengeService {
   }
 
   async updateChallenge(
-    _id: string,
+    id: string,
     updateChallengeDto: UpdateChallengeDto,
   ): Promise<void> {
-    const challenge = await this.challengeModel.findById(_id);
+    const challenge = await this.challengeModel.findById(id);
 
     if (!challenge) throw new NotFoundException('Challenge not foud');
 
@@ -91,7 +91,9 @@ export class ChallengeService {
       challenge.dateHourResponse = new Date();
       challenge.status = updateChallengeDto.status;
     }
-    challenge.dateHourChallenge = updateChallengeDto.dateHourChallenge;
-    await this.challengeModel.findByIdAndUpdate({ _id }, challenge);
+    if (updateChallengeDto.dateHourChallenge) {
+      challenge.dateHourChallenge = updateChallengeDto.dateHourChallenge;
+    }
+    await this.challengeModel.findByIdAndUpdate(id, challenge);
   }
 }
