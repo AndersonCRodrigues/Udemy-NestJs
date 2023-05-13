@@ -36,10 +36,16 @@ export class CategoiesController {
   }
 
   @Patch('/:category')
+  @UsePipes(ValidationPipe)
   async updateCategory(
     @Param('category') category: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ): Promise<void> {
     return this.categoriesService.updateCategory(category, updateCategoryDto);
+  }
+
+  @Post('/:category/player/:idPlayer')
+  async addCategoryPlayer(@Param() params: string[]): Promise<void> {
+    return this.categoriesService.addCategoryPlayer(params);
   }
 }
