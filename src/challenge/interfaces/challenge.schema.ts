@@ -1,9 +1,10 @@
 import * as mongoose from 'mongoose';
+import { ChallengeStatus } from './challenge.status.enum';
 
 export const ChallengeSchema = new mongoose.Schema(
   {
     dateHourChallenge: { type: Date },
-    status: { type: String },
+    status: { type: String, default: ChallengeStatus.PENDING },
     dateHourRequest: { type: Date, default: Date.now },
     dateHourResponse: { type: Date },
     requester: { type: String },
