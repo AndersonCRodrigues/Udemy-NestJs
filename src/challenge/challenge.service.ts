@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
 import { PlayersService } from 'src/players/players.service';
 import { CreateChallengeDto } from './dtos/create_challenge.dto';
@@ -60,12 +64,17 @@ export class ChallengeService {
 
   async getChallengeByPlayer(_id: string): Promise<IChallenge[]> {
     await this.playerService.getById(_id);
-    return this.challengeModel
+    const challenge = await this.challengeModel
       .find()
       .where('players')
       .in([_id])
       .populate('requester')
       .populate('players')
       .populate('match');
+
+    if (!challenge.length)
+      throw new NotFoundException('Player has no challenges');
+
+    return challenge;
   }
 }
