@@ -1,7 +1,7 @@
 import { ArrayMinSize, IsArray, IsNotEmpty, IsString } from 'class-validator';
 import { Event } from '../interfaces/category.interface';
 
-export class createCategoryDto {
+export class CreateCategoryDto {
   @IsString()
   @IsNotEmpty()
   readonly category: string;

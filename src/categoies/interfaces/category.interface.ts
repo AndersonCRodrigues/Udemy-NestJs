@@ -9,7 +9,7 @@ export type Event = {
 
 export interface ICategory extends Document {
   readonly category: string;
-  decription: string;
+  description: string;
   events: Event[];
   players: IPlayer[];
 }
