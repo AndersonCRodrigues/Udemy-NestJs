@@ -33,11 +33,11 @@ export class CategoiesService {
     return this.categoryModel.find();
   }
 
-  async getCategoryById(_id: string): Promise<ICategory> {
-    const category = await this.categoryModel.findById(_id);
-    if (!category) {
+  async getCategory(category: string): Promise<ICategory> {
+    const categoryFound = await this.categoryModel.findOne({ category });
+    if (!categoryFound) {
       throw new NotFoundException('Category not found');
     }
-    return category;
+    return categoryFound;
   }
 }
