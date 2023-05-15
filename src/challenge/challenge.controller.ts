@@ -14,6 +14,7 @@ import { CreateChallengeDto } from './dtos/create_challenge.dto';
 import { IChallenge } from './interfaces/challenge.interface';
 import { ChallengeStatusValidation } from './pipes/challenge.satus.pipe';
 import { UpdateChallengeDto } from './dtos/update_challenge';
+import { AddChallengeMatchDto } from './dtos/add_challenge_match.dto';
 
 @Controller('api/v1/challenges')
 export class ChallengeController {
@@ -40,5 +41,13 @@ export class ChallengeController {
     @Body(ChallengeStatusValidation) updateChallengeDto: UpdateChallengeDto,
   ) {
     return this.challengeService.updateChallenge(challenge, updateChallengeDto);
+  }
+
+  @Post('/:challenge/match/')
+  async addChallengeMatch(
+    @Body(ValidationPipe) addChallengeMatchDto: AddChallengeMatchDto,
+    @Param('challenge') _id: string,
+  ): Promise<void> {
+    return this.challengeService.addChallengeMatch(_id, addChallengeMatchDto);
   }
 }
