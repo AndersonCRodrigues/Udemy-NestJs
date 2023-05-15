@@ -1,8 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { config } from 'dotenv';
+import { AllExceptionsFilter } from './filters/http.exception.filter';
+// import * as momentTimezone from 'moment-timezone';
+
+config();
+
+const { PORT } = process.env;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+  await app.listen(PORT || 8080);
 }
 bootstrap();

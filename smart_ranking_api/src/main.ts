@@ -6,7 +6,7 @@ import { AllExceptionsFilter } from './common/filters/http.exception.filter';
 
 config();
 
-const PORT = process.env.PORT;
+const { PORT } = process.env;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
