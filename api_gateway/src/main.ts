@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import { AllExceptionsFilter } from './filters/http.exception.filter';
-// import * as momentTimezone from 'moment-timezone';
 
 config();
 

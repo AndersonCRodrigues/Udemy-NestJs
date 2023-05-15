@@ -1,12 +1,27 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Logger } from '@nestjs/common';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
+import { config } from 'dotenv';
 
-@Controller()
+const END_POINT = process.env.RABBIT_URL || 'no_url';
+
+config();
+
+@Controller('api/v1')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  private logger = new Logger(AppController.name);
+  private clienteAdminBackend: ClientProxy;
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  constructor() {
+    this.clienteAdminBackend = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [END_POINT],
+        queue: 'admin-backend',
+      },
+    });
   }
 }
