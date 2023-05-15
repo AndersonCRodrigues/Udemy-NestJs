@@ -133,4 +133,9 @@ export class ChallengeService {
       throw new InternalServerErrorException();
     }
   }
+
+  async deleteChallenge(id: string): Promise<void> {
+    const challenge = await this.findChallengebyId(id);
+    challenge.status = ChallengeStatus.CANCELED;
+  }
 }

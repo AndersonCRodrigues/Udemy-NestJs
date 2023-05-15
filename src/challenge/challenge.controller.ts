@@ -54,6 +54,6 @@ export class ChallengeController {
 
   @Delete('/challenge')
   async deleteChallenge(@Param('challenge') id: string): Promise<void> {
-    return this.challengeService.deteleChallenge(id);
+    return this.challengeService.deleteChallenge(id);
   }
 }
