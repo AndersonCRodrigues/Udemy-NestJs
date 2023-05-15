@@ -18,12 +18,10 @@ export const ChallengeSchema = new mongoose.Schema(
         ref: 'Player',
       },
     ],
-    match: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Match',
-      },
-    ],
+    match: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Match',
+    },
   },
   {
     timestamps: true,
