@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
@@ -10,13 +11,16 @@ import { IChallenge, IMatch } from './interfaces/challenge.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UpdateChallengeDto } from './dtos/update_challenge';
+import { AddChallengeMatchDto } from './dtos/add_challenge_match.dto';
+import { ChallengeStatus } from './interfaces/challenge.status.enum';
 
 @Injectable()
 export class ChallengeService {
   constructor(
     @InjectModel('Challenge')
     private readonly challengeModel: Model<IChallenge>,
-    @InjectModel('Match') matchModel: Model<IMatch>,
+    @InjectModel('Match')
+    private readonly matchModel: Model<IMatch>,
     private readonly categoryService: CategoriesService,
     private readonly playerService: PlayersService,
   ) {}
@@ -37,8 +41,16 @@ export class ChallengeService {
       )
     )
       throw new BadRequestException(
-        'The requesting Player must be in the match',
+        'The requesting Player must be in the challenge',
       );
+  }
+
+  private async findChallengebyId(id: string): Promise<IChallenge> {
+    const challenge = await this.challengeModel.findById(id);
+
+    if (!challenge) throw new NotFoundException('Challenge not foud');
+
+    return challenge;
   }
 
   async createChallenge(
@@ -83,10 +95,7 @@ export class ChallengeService {
     id: string,
     updateChallengeDto: UpdateChallengeDto,
   ): Promise<void> {
-    const challenge = await this.challengeModel.findById(id);
-
-    if (!challenge) throw new NotFoundException('Challenge not foud');
-
+    const challenge = await this.findChallengebyId(id);
     if (updateChallengeDto.status) {
       challenge.dateHourResponse = new Date();
       challenge.status = updateChallengeDto.status;
@@ -95,5 +104,33 @@ export class ChallengeService {
       challenge.dateHourChallenge = updateChallengeDto.dateHourChallenge;
     }
     await this.challengeModel.findByIdAndUpdate(id, challenge);
+  }
+
+  async addChallengeMatch(
+    id: string,
+    addChallengeMatchDto: AddChallengeMatchDto,
+  ): Promise<void> {
+    const challenge = await this.findChallengebyId(id);
+    if (
+      !challenge.players.some(
+        (player) => player._id.toString() === addChallengeMatchDto.def,
+      )
+    ) {
+      throw new BadRequestException('Player is not part of this challenge');
+    }
+
+    const match = new this.matchModel(addChallengeMatchDto);
+    match.category = challenge.category;
+    match.players = challenge.players;
+    const result = await match.save();
+    challenge.status = ChallengeStatus.DONE;
+    challenge.match = result._id;
+
+    try {
+      await this.challengeModel.findByIdAndUpdate(id, { $set: challenge });
+    } catch (e) {
+      await this.matchModel.deleteOne({ _id: result._id });
+      throw new InternalServerErrorException();
+    }
   }
 }
