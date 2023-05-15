@@ -4,7 +4,7 @@ import { IResult } from '../interfaces/challenge.interface';
 
 export class AddChallengeMatchDto {
   @IsNotEmpty()
-  def: string;
+  def: IPlayer;
 
   @IsNotEmpty()
   result: IResult[];
