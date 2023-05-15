@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -49,5 +50,10 @@ export class ChallengeController {
     @Param('challenge') _id: string,
   ): Promise<void> {
     return this.challengeService.addChallengeMatch(_id, addChallengeMatchDto);
+  }
+
+  @Delete('/challenge')
+  async deleteChallenge(@Param('challenge') id: string): Promise<void> {
+    return this.challengeService.deteleChallenge(id);
   }
 }
