@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { ICategory } from './interfaces/categories/category.interface';
 
 @Controller()
@@ -12,6 +12,14 @@ export class AppController {
   @EventPattern('create-category')
   async createCategory(@Payload() category: ICategory) {
     // this.logger.log(`category: ${JSON.stringify(category)}`);
-    await this.appService.createCategory(category);
+    return await this.appService.createCategory(category);
+  }
+
+  @MessagePattern('get-categories')
+  async getCategories(@Payload() id: string): Promise<ICategory | ICategory[]> {
+    if (id) {
+      return this.appService.getCategoryById(id);
+    }
+    return this.appService.getAllCategories();
   }
 }
