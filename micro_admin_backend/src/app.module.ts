@@ -11,12 +11,7 @@ const { MONGODB } = process.env;
 
 @Module({
   imports: [
-    MongooseModule.forRoot(MONGODB, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useFindAndModify: true,
-    }),
+    MongooseModule.forRoot(MONGODB),
     MongooseModule.forFeature([
       { name: 'Category', schema: CategorySchema },
       { name: 'Player', schema: PlayerSchema },
