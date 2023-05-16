@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
+import { EventPattern, Payload } from '@nestjs/microservices';
+import { ICategory } from './interfaces/categories/category.interface';
 
 @Controller()
 export class AppController {
+  private readonly logger = new Logger(AppController.name);
+
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @EventPattern('create-category')
+  async createCategory(@Payload() category: ICategory) {
+    // this.logger.log(`category: ${JSON.stringify(category)}`);
+    this.appService.createCategory(category);
   }
 }
