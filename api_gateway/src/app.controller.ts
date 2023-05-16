@@ -3,6 +3,8 @@ import {
   Controller,
   Get,
   Logger,
+  Param,
+  Patch,
   Post,
   Query,
   UsePipes,
@@ -16,6 +18,7 @@ import {
 import { config } from 'dotenv';
 import { CreateCategoryDto } from './dtos/create_category.dto';
 import { Observable } from 'rxjs';
+import { UpdateCategoryDto } from './dtos/update_category.dto';
 config();
 
 const END_POINT = process.env.RABBIT_URL || 'no_url';
@@ -45,5 +48,17 @@ export class AppController {
   @Get('categories')
   getCategory(@Query('idCategory') _id: string): Observable<any> {
     return this.clienteAdminBackend.send('get-categories', _id || '');
+  }
+
+  @Patch('categories/:id')
+  @UsePipes(ValidationPipe)
+  updateCategorie(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ): void {
+    this.clienteAdminBackend.emit('update-category', {
+      id,
+      category: updateCategoryDto,
+    });
   }
 }
