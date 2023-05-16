@@ -59,10 +59,11 @@ export class CategoriesService {
       .find({ category })
       .where('players')
       .in([_id]);
-    if (check.length)
+    if (check.length) {
       throw new BadRequestException(
         `Player already included in category ${category}`,
       );
+    }
   }
 
   async addCategoryPlayer(params: string[]): Promise<void> {
@@ -81,8 +82,9 @@ export class CategoriesService {
       .where('players')
       .in([_id]);
 
-    if (!category)
+    if (!category) {
       throw new NotFoundException('Player not being in any category');
+    }
 
     return category;
   }
