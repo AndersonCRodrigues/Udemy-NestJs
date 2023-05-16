@@ -31,4 +31,13 @@ export class AppService {
       throw new RpcException(e.message);
     }
   }
+
+  async getCategories(_id: string): Promise<ICategory> {
+    try {
+      return this.categoryModel.findOne({ _id });
+    } catch (e) {
+      this.logger.error(`error: ${JSON.stringify(e.message)}`);
+      throw new RpcException(e.message);
+    }
+  }
 }
