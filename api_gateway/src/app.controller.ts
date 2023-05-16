@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   Logger,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -13,11 +15,12 @@ import {
 } from '@nestjs/microservices';
 import { config } from 'dotenv';
 import { CreateCategoryDto } from './dtos/create_category.dto';
+import { Observable } from 'rxjs';
 config();
 
 const END_POINT = process.env.RABBIT_URL || 'no_url';
 
-@Controller('api/v1/categories')
+@Controller('api/v1/')
 export class AppController {
   private logger = new Logger(AppController.name);
   private clienteAdminBackend: ClientProxy;
@@ -33,9 +36,14 @@ export class AppController {
     });
   }
 
-  @Post()
+  @Post('categories')
   @UsePipes(ValidationPipe)
-  async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.clienteAdminBackend.emit('create-category', createCategoryDto);
+  createCategory(@Body() createCategoryDto: CreateCategoryDto) {
+    this.clienteAdminBackend.emit('create-category', createCategoryDto);
+  }
+
+  @Get('categories')
+  getCategory(@Query('idCategory') _id: string): Observable<any> {
+    return this.clienteAdminBackend.send('get-categories', _id || '');
   }
 }
